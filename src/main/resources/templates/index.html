@@ -1,0 +1,15 @@
+<!DocType html>
+<html xmlns:th="http://www.thymeleaf.org"  >
+
+    <head>
+        <meta charset="UTF-8">
+        <title>User Profile</title>
+    </head>
+
+    <body>
+
+        <h1 th:text="'Hola ' + ${name} + '!'"></h1>
+        <img th:src="'data:image/jpeg;base64,' + ${pictureBase64}" alt="Foto de perfil">
+    </body>
+
+</html>
