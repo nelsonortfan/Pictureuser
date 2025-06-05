@@ -27,5 +27,13 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public User createUser(String name, MultipartFile file) throws IOException{
+        User user = new User();
+        user.setName(name);
+        byte [] bytes = file.getBytes();
+        user.setPictureBase64(Base64.getEncoder().encodeToString(bytes));
+        return userRepository.save(user);
+    }
+
 
 }
