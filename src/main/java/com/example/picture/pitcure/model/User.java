@@ -13,7 +13,8 @@ public class User {
     private String name;
 
     @Lob
-    @Column(columnDefinition = "LONGBLOB")
+    //@Column(columnDefinition = "LONGBLOB")
+    @Column(columnDefinition = "TEXT")
     private String pictureBase64;
 
     public Long getId() {
