@@ -24,12 +24,6 @@ public class UserController {
     private UserRepository userRepository;
 
     @PostMapping
-    public ResponseEntity<User> createuser(@RequestBody User user){
-        User saveUser = userRepository.save(user);
-        return ResponseEntity.status(HttpStatus.OK).body(saveUser);
-    }
-
-    @PostMapping("/picture")
     public ResponseEntity<User> createUserWithPicture(@RequestParam("name") String name,
                                                       @RequestParam("file") MultipartFile file){
         try{
@@ -53,17 +47,14 @@ public class UserController {
         }
     }
 
+
     @GetMapping("/{name}/picture")
     public ResponseEntity<byte[]> getPicture(@PathVariable String name){
-        User user = userRepository.findByName(name);
+        User user = userService.getUser(name);
 
-        return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(user.getPictureBase64().getBytes());
-    }
-
-
-    @GetMapping("/{name}/picture3")
-    public ResponseEntity<byte[]> getPicture3(@PathVariable String name){
-        User user = userRepository.findByName(name);
+        if(user == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
 
         byte [] imagesBytes = Base64.getDecoder().decode(user.getPictureBase64());
         return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(imagesBytes);
