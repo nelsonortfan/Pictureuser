@@ -7,23 +7,11 @@ import jakarta.persistence.*;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     private String name;
 
-    @Lob
-    //@Column(columnDefinition = "LONGBLOB")
+    //@Lob
     @Column(columnDefinition = "TEXT")
     private String pictureBase64;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

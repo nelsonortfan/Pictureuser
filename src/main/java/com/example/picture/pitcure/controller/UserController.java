@@ -42,10 +42,10 @@ public class UserController {
     }
 
     @PutMapping("/{id}/picture")
-    public ResponseEntity<User> uploadPicture(@PathVariable Long id,
+    public ResponseEntity<User> uploadPicture(@PathVariable String name,
                                               @RequestParam("file")MultipartFile file){
         try{
-            User updateUser = userService.updateUserPicture(id, file);
+            User updateUser = userService.updateUserPicture(name, file);
             return ResponseEntity.ok(updateUser);
         }
         catch(IOException e){
@@ -53,21 +53,17 @@ public class UserController {
         }
     }
 
-    @GetMapping("/{id}/picture")
-    public ResponseEntity<byte[]> getPicture(@PathVariable Long id){
-        User user = userRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("User not Found")
-        );
+    @GetMapping("/{name}/picture")
+    public ResponseEntity<byte[]> getPicture(@PathVariable String name){
+        User user = userRepository.findByName(name);
 
         return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(user.getPictureBase64().getBytes());
     }
 
 
-    @GetMapping("/{id}/picture3")
-    public ResponseEntity<byte[]> getPicture3(@PathVariable Long id){
-        User user = userRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("User not Found")
-        );
+    @GetMapping("/{name}/picture3")
+    public ResponseEntity<byte[]> getPicture3(@PathVariable String name){
+        User user = userRepository.findByName(name);
 
         byte [] imagesBytes = Base64.getDecoder().decode(user.getPictureBase64());
         return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(imagesBytes);

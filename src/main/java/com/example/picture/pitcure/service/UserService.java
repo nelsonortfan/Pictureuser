@@ -15,10 +15,8 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public User updateUserPicture(Long userId, MultipartFile file) throws IOException {
-        User user = userRepository.findById(userId).orElseThrow(
-                () -> new RuntimeException("User not found")
-        );
+    public User updateUserPicture(String name, MultipartFile file) throws IOException {
+        User user = userRepository.findByName(name);
 
         byte [] bytes = file.getBytes();
         String base64Image = Base64.getEncoder().encodeToString(bytes);

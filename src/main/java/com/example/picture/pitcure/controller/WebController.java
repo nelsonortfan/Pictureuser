@@ -14,12 +14,10 @@ public class WebController {
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping("/user/{id}/profile")
-    public String getUserProfile(@PathVariable Long id, Model model){
+    @GetMapping("/user/{name}/profile")
+    public String getUserProfile(@PathVariable String name, Model model){
 
-        User user = userRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("User not found")
-        );
+        User user = userRepository.findByName(name);
 
         model.addAttribute("name", user.getName());
         model.addAttribute("pictureBase64", user.getPictureBase64() );
