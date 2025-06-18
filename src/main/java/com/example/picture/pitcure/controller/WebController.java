@@ -8,6 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.Optional;
+
 @Controller
 public class WebController {
 
@@ -17,12 +19,15 @@ public class WebController {
     @GetMapping("/user/{name}/profile")
     public String getUserProfile(@PathVariable String name, Model model){
 
-        User user = userRepository.findByName(name);
+        Optional<User> userOptional = userRepository.findByName(name);
 
-        model.addAttribute("name", user.getName());
-        model.addAttribute("pictureBase64", user.getPictureBase64() );
-
-        return "index";
+        if(userOptional.isPresent()){
+            User user = userOptional.get();
+            model.addAttribute("name", user.getName());
+            model.addAttribute("pictureBase64", user.getPictureBase64() );
+            return "index";
+        }
+        return "";
 
     }
 

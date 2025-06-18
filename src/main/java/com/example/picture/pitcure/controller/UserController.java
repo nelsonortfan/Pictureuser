@@ -1,5 +1,6 @@
 package com.example.picture.pitcure.controller;
 
+import com.example.picture.pitcure.exception.UserAlreadyExistsException;
 import com.example.picture.pitcure.model.User;
 import com.example.picture.pitcure.repository.UserRepository;
 import com.example.picture.pitcure.service.UserService;
@@ -31,6 +32,9 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
         }
         catch(IOException e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+        catch (UserAlreadyExistsException e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
