@@ -1,5 +1,6 @@
 package com.example.picture.pitcure.controller;
 
+import com.example.picture.pitcure.dto.UsuarioDTO;
 import com.example.picture.pitcure.exception.UserAlreadyExistsException;
 import com.example.picture.pitcure.model.User;
 import com.example.picture.pitcure.repository.UserRepository;
@@ -39,7 +40,7 @@ public class UserController {
         }
     }
 
-    @PutMapping("/{id}/picture")
+    @PutMapping("/{name}/picture")
     public ResponseEntity<User> uploadPicture(@PathVariable String name,
                                               @RequestParam("file")MultipartFile file){
         try{
@@ -64,6 +65,27 @@ public class UserController {
         return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(imagesBytes);
 
     }
+
+    @GetMapping("/{name}/details")
+    public ResponseEntity<User> getDetailsUser(@PathVariable String name){
+        User user = userService.getUser(name);
+
+        if(user == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok().body(user);
+    }
+
+    @PutMapping("/api/usuario/imagen")
+    public ResponseEntity<User> actualizarImagen(@RequestBody UsuarioDTO dto) {
+        String name = dto.getNombre();
+        User newUser = userService.save(name,dto.getImagenBase64());
+        if(newUser != null){
+            return ResponseEntity.ok().body(newUser);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
 
 
 }

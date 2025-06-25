@@ -55,4 +55,17 @@ public class UserService {
         }
     }
 
+    public User save(String name, String imageBase64){
+        Optional<User> optionalUser = userRepository.findByName(name);
+        if(optionalUser.isPresent()){
+            User userSaved = optionalUser.get();
+            userSaved.setPictureBase64(imageBase64);
+            userRepository.save(userSaved);
+            return userSaved;
+        }
+        else {
+            throw new UserNotFoundException(name);
+        }
+    }
+
 }
